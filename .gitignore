@@ -1,3 +1,5 @@
 public/
 *.un~
-
+.deploy_git/
+db.json
+debug.log

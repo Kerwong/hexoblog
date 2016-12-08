@@ -5,7 +5,7 @@
 # Site
 title: Nutslog
 subtitle: Intergation, I believe that practice, not dogma
-description: 印多为忌，不见食伤，始勤终惰，多学少成
+description: 印多为忌 不见食伤 始勤终惰 多学少成
 author: Alex Wang
 language: zh-Hans
 timezone:
@@ -81,5 +81,5 @@ deploy:
   pass: Wwc6561331!
   remote: /htdocs
   port: 21
-  connections: 1
+  connections: 2
   verbose: true
