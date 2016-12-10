@@ -12,10 +12,20 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://www.wenchao.wang
+url: http://wenchao.wang
 root: /
 permalink: :year/:month/:title/
 permalink_defaults:
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+      
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000V
 
 # Directory
 source_dir: source
@@ -49,6 +59,13 @@ default_category: uncategorized
 category_map:
 tag_map:
 
+# Sitemap
+sitemap:
+  path: sitemap.xml
+
+baidusitemap:
+  path: baidusitemap.xml
+
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
@@ -62,7 +79,7 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-## Plugins: https://hexo.io/plugins/
+## Plugins: https://hexo.io/plugins/ 
 ## Themes: https://hexo.io/themes/
 theme: next
 stylus:
@@ -75,11 +92,12 @@ deploy:
   repo: https://github.com/Kerwong/kerwong.github.io
 #repo: git@github.com:Kerwong/kerwong.github.io.git
   branch: master
-- type: ftpsync
-  host: hz180407.ftp.aliapp.com
-  user: hz180407
-  pass: Wwc6561331!
-  remote: /htdocs
-  port: 21
-  connections: 2
-  verbose: true
+# - type: ftpsync
+#   host: hz180407.ftp.aliapp.com
+#   user: hz180407
+#   pass: Wwc6561331!
+#   remote: /htdocs
+#   port: 21
+#   ignore: ['ewh_logreport_no_delete']
+#   connections: 2
+#   verbose: true

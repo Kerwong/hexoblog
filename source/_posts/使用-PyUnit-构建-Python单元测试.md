@@ -2,8 +2,8 @@
 title: 使用 PyUnit 构建 Python单元测试
 date: 2016-10-16 22:25:16
 tags:
-- python
-- test
+- Python
+- Test
 ---
 ## 概况
 Python 单元测试框架（The Python unit testing framework） ，简称为PyUnit ， 是 Kent Beck 和 Erich Gamma 这两位聪明的家伙所设计的 JUnit  的Python 版本。
