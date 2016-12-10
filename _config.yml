@@ -25,7 +25,7 @@ search:
   path: search.xml
   field: post
   format: html
-  limit: 10000V
+  limit: 10000
 
 # Directory
 source_dir: source
