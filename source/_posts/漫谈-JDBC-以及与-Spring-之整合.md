@@ -21,7 +21,7 @@ JDBC  驱动程序管理器可确保正确的驱动程序来访问每个数据�
 
 以下是结构图，其中显示了驱动程序管理器相对于在 JDBC  驱动程序和 Java  应用程序所处的位置。
 
-
+![](http://nutslog.qiniudn.com/17-5-17/52617002-file_1495004437453_1171b.jpg "JDBC 组件")
 
 ## API 与类概述
 > JDBC API 主要位于JDK 中的java.sql 包中（之后扩展的内容位于javax.sql 包中），主要包括（斜体代表接口，需驱动程序提供者来具体实现）：
@@ -71,7 +71,7 @@ public class JDBCExample {
 
     /**  Database credentials
      *   数据库的账号、密码
-     *   */
+     */
     static final String USER = "root";
     static final String PASS = "";
 
@@ -145,6 +145,7 @@ public class JDBCExample {
     }
 }
 ```
+
 以上一例为模板，以下例子仅填充
 ```java
 Connection conn = null;
@@ -152,29 +153,30 @@ Statement stmt = null;
 PreparedStatement pstmt = null;
 
 try {
-	Class.forName(JDBC_DRIVER);
-	conn = DriverManager.getConnection(DB_URL, USER, PASS);
+    Class.forName(JDBC_DRIVER);
+    conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-	/* 在此填充代码 */
+    /* 在此填充代码 */
 
 } catch (ClassNotFoundException e) {
-	e.printStackTrace();
+    e.printStackTrace();
 } catch (SQLException e) {
-	e.printStackTrace();
+    e.printStackTrace();
 } finally {
-	try {
-		if (stmt != null)
-			stmt.close();
-	} catch (SQLException se2) {
-		try {
-			if (conn != null)
-				conn.close();
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-	}
+    try {
+        if (stmt != null)
+            stmt.close();
+    } catch (SQLException se2) {
+        try {
+            if (conn != null)
+                conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
 }
 ```
+
 ### Example 1：executeQuery()，仅单行数据
 返回一个 ResultSet 对象。当希望得到一个结果集时使用该方法，如使用 SELECT 语句。
 ```java
@@ -184,9 +186,9 @@ String sql1 = "SELECT COUNT(DISTINCT `name`) AS 'cnt' FROM `user`";
 ResultSet rs = stmt.executeQuery(sql1);
 
 while (rs.next()) {
-	int cnt1 = rs.getInt(1); // 此处的 column，第一列下标为 1，而非 0
-	int cnt2 = rs.getInt("cnt");
-	System.out.println("count: " + cnt1 + ", " + cnt2);
+    int cnt1 = rs.getInt(1); // 此处的 column，第一列下标为 1，而非 0
+    int cnt2 = rs.getInt("cnt");
+    System.out.println("count: " + cnt1 + ", " + cnt2);
 }
 rs.close();
 ```
@@ -206,6 +208,7 @@ int ret2 = stmt.executeUpdate(sql2);
 String sql3 = "CREATE TABLE tmp(id int,name VARCHAR(255))";
 boolean ret3 = stmt.execute(sql3);
 ```
+
 ### Example 4：PrepareStatement
 使用问号作为参数的标示。进行参数设置与大部分Java API中下标的使用方法不同，字段的下标从1开始，1代表第一个问号
 ```java
@@ -216,12 +219,13 @@ pstmt.setString(1, "test");
 pstmt.setInt(2, 10);
 ResultSet rs4 = pstmt.executeQuery();
 while (rs4.next()) {
-	String name = rs4.getString("name");
-	int age = rs4.getInt("age");
-	System.out.println("Name: " + name + ", " + "Age: " + age);
+    String name = rs4.getString("name");
+    int age = rs4.getInt("age");
+    System.out.println("Name: " + name + ", " + "Age: " + age);
 }
 rs4.close();
 ```
+
 ### Example 5：JDBC 下的事务
 ```java
 ///////// Example 5: 事务与回滚 transaction and rollback
@@ -229,125 +233,156 @@ boolean autoCommitDefault = false;
 Savepoint savepoint1 = null;
 Savepoint savepoint2 = null;
 try {
-	Class.forName(JDBC_DRIVER);
-	conn = DriverManager.getConnection(DB_URL, USER, PASS);
+    Class.forName(JDBC_DRIVER);
+    conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-	autoCommitDefault = conn.getAutoCommit();
-	// 关闭自动提交，数据库默认时，是自动提交的
-	conn.setAutoCommit(false);
-	stmt = conn.createStatement();
+    autoCommitDefault = conn.getAutoCommit();
+    // 关闭自动提交，数据库默认时，是自动提交的
+    conn.setAutoCommit(false);
+    stmt = conn.createStatement();
 
-	String sql5 = "SELECT * FROM `user` WHERE age=10";
-	String sql6 = "INSERT INTO `user`(name, age) VALUES ('name1',1),('name2', 2)";
-	String sql7 = "UPDATE `user` SET `name`='newname' WHERE age=10";
-	stmt.executeQuery(sql5);
-	savepoint1 = conn.setSavepoint("Savepoint1");
-	stmt.executeUpdate(sql6);
-	savepoint2 = conn.setSavepoint("Savepoint2");
-	stmt.executeUpdate(sql7);
-	conn.commit();
+    String sql5 = "SELECT * FROM `user` WHERE age=10";
+    String sql6 = "INSERT INTO `user`(name, age) VALUES ('name1',1),('name2', 2)";
+    String sql7 = "UPDATE `user` SET `name`='newname' WHERE age=10";
+    stmt.executeQuery(sql5);
+    savepoint1 = conn.setSavepoint("Savepoint1");
+    stmt.executeUpdate(sql6);
+    savepoint2 = conn.setSavepoint("Savepoint2");
+    stmt.executeUpdate(sql7);
+    conn.commit();
 
 } catch (Throwable e) {
-	try {
-		// 回滚, 至 savepoint2. savepoint 非必须
-		conn.rollback(savepoint2);
-	} catch (Throwable ignore) {}
-	throw e;
+    try {
+        // 回滚, 至 savepoint2. savepoint 非必须
+        conn.rollback(savepoint2);
+    } catch (Throwable ignore) {}
+    throw e;
 } finally {
-	try {
-		// 将 commit 设回默认值
-		conn.setAutoCommit(autoCommitDefault);
-	} catch (Throwable ignore) {}
+    try {
+        // 将 commit 设回默认值
+        conn.setAutoCommit(autoCommitDefault);
+    } catch (Throwable ignore) {}
 
-	try {
-		if (stmt != null)
-			stmt.close();
-	} catch (SQLException se2) {
-		try {
-			if (conn != null)
-				conn.close();
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-	}
+    try {
+        if (stmt != null)
+            stmt.close();
+    } catch (SQLException se2) {
+        try {
+            if (conn != null)
+                conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
 }
 ```
+
 ### Example 6：JDBC 下的存储过程
 ** TODO **
 ```java
 /*
- * 有IN 类型的参数输入 和Out类型的参数输出	
+ * 有IN 类型的参数输入 和Out类型的参数输出    
  */
 public static void inOutTest(){
-	Connection connection = null;
-	Statement statement = null;
-	ResultSet resultSet = null;
-	try {
-		
-		Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-		
-		Driver driver = DriverManager.getDriver(URL);
-		Properties props = new Properties();
-		props.put("user", USER_NAME);
-		props.put("password", PASSWORD);
-		
-		connection = driver.connect(URL, props);
-		
-		//获得Statement对象,这里使用了事务机制，如果创建存储过程语句失败或者是执行compile失败，回退
-		connection.setAutoCommit(false);
-		statement = connection.createStatement();
-		String procedureString = "CREATE OR REPLACE PROCEDURE get_job_min_salary_proc("
-									+"input_job_id IN VARCHAR2,"
-									+"output_salary OUT number) AS "
-									+"BEGIN "
-									+"SELECT min_salary INTO output_salary FROM jobs WHERE job_id = input_job_id; "
-									+"END   get_job_min_salary_proc;";
-		//1 创建存储过程,JDBC 数据库会编译存储过程
-		statement.execute(procedureString);
-		//成功则提交
-		connection.commit();
-		//2.创建callableStatement
-	    CallableStatement callableStatement = connection.prepareCall("CALL get_job_min_salary_proc(?,?)");
-	    //3，设置in参数
-	    callableStatement.setString(1, "AD_PRES");
-	    //4.注册输出参数
-	    callableStatement.registerOutParameter(2, Types.NUMERIC);
-	    //5.执行语句
-	    callableStatement.execute();
-	    
-	    BigDecimal salary = callableStatement.getBigDecimal(2);
-	    System.out.println(salary);
-		
-	} catch (ClassNotFoundException e) {
-		System.out.println("加载Oracle类失败！");
-		e.printStackTrace();
-	} catch (SQLException e) {
-		try {
-			connection.rollback();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		e.printStackTrace();
-	} catch (InstantiationException e) {
-		e.printStackTrace();
-	} catch (IllegalAccessException e) {
-		e.printStackTrace();
-	}finally{
-		    //使用完成后管理链接，释放资源，释放顺序应该是： ResultSet ->Statement ->Connection
-			
-			try {
-				statement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-	}
+    Connection connection = null;
+    Statement statement = null;
+    ResultSet resultSet = null;
+    try {
+        Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+        
+        Driver driver = DriverManager.getDriver(URL);
+        Properties props = new Properties();
+        props.put("user", USER_NAME);
+        props.put("password", PASSWORD);
+        
+        connection = driver.connect(URL, props);
+        
+        //获得Statement对象,这里使用了事务机制，如果创建存储过程语句失败或者是执行compile失败，回退
+        connection.setAutoCommit(false);
+        statement = connection.createStatement();
+        String procedureString = "CREATE OR REPLACE PROCEDURE get_job_min_salary_proc("
+                                    +"input_job_id IN VARCHAR2,"
+                                    +"output_salary OUT number) AS "
+                                    +"BEGIN "
+                                    +"SELECT min_salary INTO output_salary FROM jobs WHERE job_id = input_job_id; "
+                                    +"END   get_job_min_salary_proc;";
+        //1 创建存储过程,JDBC 数据库会编译存储过程
+        statement.execute(procedureString);
+        //成功则提交
+        connection.commit();
+        //2.创建callableStatement
+        CallableStatement callableStatement = connection.prepareCall("CALL get_job_min_salary_proc(?,?)");
+        //3，设置in参数
+        callableStatement.setString(1, "AD_PRES");
+        //4.注册输出参数
+        callableStatement.registerOutParameter(2, Types.NUMERIC);
+        //5.执行语句
+        callableStatement.execute();
+        
+        BigDecimal salary = callableStatement.getBigDecimal(2);
+        System.out.println(salary);
+    } catch (ClassNotFoundException e) {
+        System.out.println("加载Oracle类失败！");
+        e.printStackTrace();
+    } catch (SQLException e) {
+        try {
+            connection.rollback();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        e.printStackTrace();
+    } catch (InstantiationException e) {
+        e.printStackTrace();
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    }finally{
+            //使用完成后管理链接，释放资源，释放顺序应该是： ResultSet ->Statement ->Connection
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    }
 }
 ```
 
+# 附录一
+## SQL 到 Java 的数据类型的映射
+| SQL类型         | Java类型               |
+| ------------- | -------------------- |
+| CHAR          | java.lang.String     |
+| VARCHAR       | java.lang.String     |
+| LONGVARCHAR   | java.lang.String     |
+| NUMERIC       | java.math.BigDecimal |
+| DECIMAL       | java.math.BigDecimal |
+| BIT           | boolean              |
+| TINYINT       | byte                 |
+| SMALLINT      | short                |
+| INTEGER       | int                  |
+| BIGINT        | long                 |
+| REAL          | float                |
+| FLOAT         | double               |
+| DOUBLE        | double               |
+| BINARY        | byte[]               |
+| VARBINARY     | byte[]               |
+| LONGVARBINARY | byte[]               |
+| DATE          | java.sql.Date        |
+| TIME          | java.sql.Time        |
+| TIMESTAMP     | java.sql.Timestamp   |
+| BLOB          | java.sql.Blob        |
+| CLOB          | java.sql.Clob        |
+| Array         | java.sql.Array       |
+| REF           | java.sql.Ref         |
+| Struct        | java.sql.Struct      |
 
+# 参考资料
+- http://www.yiibai.com/jdbc/
+- http://wiki.jikexueyuan.com/project/jdbc/
+- http://www.cnblogs.com/hongten/archive/2011/03/29/1998311.html
+- https://zh.wikipedia.org/wiki/Java%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5

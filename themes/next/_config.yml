@@ -181,7 +181,7 @@ links_title: Links
 links_layout: block
 #links_layout: inline
 links:
-  我的个人域名站(暂停使用至17年4月): http://www.wenchao.wang/
+  我的个人域名站(暂停使用至17年): http://www.wenchao.wang/
   我的简书: http://www.jianshu.com/users/880976920dd2/
 
 
@@ -225,7 +225,13 @@ auto_excerpt:
 
 reward_comment: 坚持书写高质量博客，感谢您的支持！
 alipay: /images/alipay_reward.jpg
+wechatpay: /images/wechatpay_reward.jpg
 
+# canvas_nest
+canvas_nest: true #开启动画
+
+# three_waves
+three_waves: true
 
 # ---------------------------------------------------------------
 # Third Party Services Settings
@@ -244,8 +250,8 @@ mathjax:
 baidu_analytics: 853529895bee96b6d4b73302b1450327
 
 # Duoshuo ShortName
-duoshuo_shortname: wangwc
-duoshuo_hotartical: false
+# duoshuo_shortname: wangwc
+# duoshuo_hotartical: false
 
 # Disqus
 #disqus_shortname:
@@ -278,12 +284,13 @@ baidushare:
 # Make duoshuo show UA
 # user_id must NOT be null when admin_enable is true!
 # you can visit http://dev.duoshuo.com get duoshuo user id.
-duoshuo_info:
-  ua_enable: true
-  admin_enable: true
-  user_id: 7850296
-  admin_nickname: 博主
+#duoshuo_info:
+#  ua_enable: true
+#  admin_enable: true
+#  user_id: 7850296
+#  admin_nickname: 博主
 
+# gentie_productKey: 4e5271b23a0f4120a61bdd125603a450
 
 # Facebook SDK Support.
 # https://github.com/iissnan/hexo-theme-next/pull/410
